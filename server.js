@@ -15,8 +15,20 @@ const io = socketIo(server, {
   },
 });
 
-app.use(cors())
+const corsOptions = {
+  origin: allowedOrigins,
+  methods: ["GET", "POST"],
+}
+
+// Apply restricted CORS globally
+app.use(cors(corsOptions))
 app.use(express.json())
+
+// Health check endpoint open to all origins
+app.get('/api/health', cors(), (req, res) => {
+  res.status(200).send('Server Health OK - in good shape');
+});
+
 
 // Store active sessions
 let currentQuestion = null
