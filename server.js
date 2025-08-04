@@ -2,15 +2,18 @@ const express = require("express")
 const http = require("http")
 const socketIo = require("socket.io")
 const cors = require("cors")
+require("dotenv").config()
 
 const app = express()
 const server = http.createServer(app)
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+
 const io = socketIo(server, {
   cors: {
-    origin:[ "http://localhost:3000","https://intervue-io-frontend-two.vercel.app"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
-})
+});
 
 app.use(cors())
 app.use(express.json())
